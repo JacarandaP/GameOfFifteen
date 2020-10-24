@@ -17,8 +17,8 @@ public class GameOfFifteen extends JFrame implements ActionListener {
 
 
         setLayout(new GridLayout(xGrid, yGrid));
-        createButtons(); //activate this, remove the line below and everthing will go back to where we left.
-        //shuffleArray(createButtons());
+        //createButtons(); //activate this, remove the line below and everthing will go back to where we left.
+        shuffleArray(createButtons());
         setSize(300, 300);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -51,31 +51,34 @@ public class GameOfFifteen extends JFrame implements ActionListener {
      */
     public void shuffleArray(Brick[][] buttons) {
         Random rnd = ThreadLocalRandom.current();
-        for (int i = 3; i > 0; i--)
-            for (int j = 3; j > 0; j--) {
+        for (int i = buttons.length-1; i > 0; i--)
+            for (int j = buttons[i].length-1; j > 0; j--) {
 
                 int indexX = rnd.nextInt(i + 1);
                 int indexY = rnd.nextInt(j + 1);
 
-                Brick ab = buttons[indexX][indexY];
-                buttons[indexX][indexY] = buttons[i][j];
-                buttons[indexX][indexY] = buttons[i][j];
-                buttons[i][j] = ab;
+                exchangePlace(buttons[indexX][indexY], buttons[i][j]);
+
             }
         refresh();
     }
 
     public void moveButton(Brick selectedButton) {
-        int tempX = selectedButton.getXPos();
-        int tempY = selectedButton.getYPos();
+        exchangePlace(emptyButton, selectedButton);
 
-        selectedButton.setXPos(emptyButton.getXPos());
-        selectedButton.setYPos(emptyButton.getYPos());
+    }
 
-        emptyButton.setXPos(tempX);
-        emptyButton.setYPos(tempY);
-        buttons[emptyButton.getXPos()][emptyButton.getYPos()] = emptyButton;
-        buttons[selectedButton.getXPos()][selectedButton.getYPos()] = selectedButton;
+    public void exchangePlace(Brick button1, Brick button2) {
+        int tempX = button1.getXPos();
+        int tempY = button1.getYPos();
+
+        button1.setXPos(button2.getXPos());
+        button1.setYPos(button2.getYPos());
+
+        button2.setXPos(tempX);
+        button2.setYPos(tempY);
+        buttons[button2.getXPos()][button2.getYPos()] = button2;
+        buttons[button1.getXPos()][button1.getYPos()] = button1;
 
     }
 
