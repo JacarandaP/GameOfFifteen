@@ -12,22 +12,26 @@ public class GameOfFifteen extends JFrame implements ActionListener {
     int xGrid = 4;
     int yGrid = 4;
     int gridSize = xGrid * yGrid;
+    JPanel gameButtonsPanel = new JPanel();
+    JPanel sidePanel = new JPanel();
+    JButton playButton = new JButton("play again");
+    JPanel mainPanel = new JPanel();
 
     GameOfFifteen() {
 
-
-        setLayout(new GridLayout(xGrid, yGrid));
-        //createButtons(); //activate this, remove the line below and everthing will go back to where we left.
+        gameButtonsPanel.setLayout(new GridLayout(xGrid, yGrid));
         shuffleArray(createButtons());
-        setSize(300, 300);
+        mainPanel.setLayout(new BorderLayout());
+        sidePanel.add(playButton);
+        mainPanel.add(gameButtonsPanel, BorderLayout.CENTER);
+        mainPanel.add(sidePanel, BorderLayout.SOUTH);
+        add(mainPanel);
         setVisible(true);
+        setSize(300, 300);
+        setTitle("Game of 15");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    /* I wanted to use the suffle method using the array as parameter. To do that, I think the cleanest way
-    is to make createButtons return the array buttons. Then ha createButtons as parameter to suffleArray. As
-    Brick [][] array was created instead of int [][], the expected return is therefore Brick.
-     */
     public Brick[][] createButtons() {
         buttons = new Brick[xGrid][yGrid];
 
@@ -36,7 +40,7 @@ public class GameOfFifteen extends JFrame implements ActionListener {
                 buttons[x][y] = new Brick(x, y);
                 buttons[x][y].setText( String.valueOf(x * xGrid + y + 1));
                 buttons[x][y].addActionListener(this);
-                add(buttons[x][y]);
+                gameButtonsPanel.add(buttons[x][y]);
             }
 
         buttons[xGrid - 1][yGrid - 1].setText("");
@@ -45,10 +49,6 @@ public class GameOfFifteen extends JFrame implements ActionListener {
         return buttons;
     }
 
-    /* I don't understand what's wrong. I've check and this method is right, this is how we shuffle the
-    elements of the array. I think the problem is "empty button" that is fixed or something like that, but I don't
-    know. I'm sure it will need a really really small fix.
-     */
     public void shuffleArray(Brick[][] buttons) {
         Random rnd = ThreadLocalRandom.current();
         for (int i = buttons.length-1; i > 0; i--)
@@ -82,15 +82,14 @@ public class GameOfFifteen extends JFrame implements ActionListener {
 
     }
 
-    // TODO remove harcode size Look create Buttons
     public void refresh() {
         for (int x = 0; x < xGrid; x++)
             for (int y = 0; y < yGrid; y++) {
-                remove(buttons[x][y]);
+                gameButtonsPanel.remove(buttons[x][y]);
             }
         for (int x = 0; x < xGrid; x++)
             for (int y = 0; y < yGrid; y++) {
-                add(buttons[x][y]);
+                gameButtonsPanel.add(buttons[x][y]);
             }
         revalidate();
     }
@@ -98,13 +97,13 @@ public class GameOfFifteen extends JFrame implements ActionListener {
     private boolean isCompleted() {
         boolean isSuccess = true;
         if (emptyButton.getXPos() == xGrid - 1 && emptyButton.getYPos() == yGrid - 1) {
-            int count = 0;
+            int expectedValue = 0;
             for (int x = 0; x < xGrid; x++)
             {
                 for (int y = 0; y < yGrid; y++) {
-                    count++;
-                    int buttonNumber = buttons[x][y].getText() == "" ?  gridSize : Integer.valueOf(buttons[x][y].getText());
-                    if ( buttonNumber != count) {
+                    expectedValue++;
+                    int buttonNumber = buttons[x][y].getText().isEmpty() ?  gridSize : Integer.valueOf(buttons[x][y].getText());
+                    if ( buttonNumber != expectedValue) {
                         isSuccess = false;
                         break;
                     }
@@ -112,7 +111,7 @@ public class GameOfFifteen extends JFrame implements ActionListener {
             }
         } else
             isSuccess = false;
-
+//TODO remove sout, we know the method works! :)
         System.out.println(isSuccess);
         return isSuccess;
     }
@@ -123,10 +122,10 @@ public class GameOfFifteen extends JFrame implements ActionListener {
         if (selectedButton.isNextTo(emptyButton)) {
             moveButton(selectedButton);
               if (isCompleted())
-                  System.out.println("suuu");
+                  JOptionPane.showMessageDialog(null, "You've won!");
             refresh();
-            //TODO: check if the game is completed successfully.
-            //TODO: if not completed sucessfully, refresh into a new game (insert button "play again")
+
+            //TODO: make a ActionEvent med play again button and call shuffle method when the button is pressed.
         }
 
 
