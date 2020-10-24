@@ -10,6 +10,8 @@ public class Brick extends JButton {
     private int x;
     private int y;
 
+
+
     public Brick(int x, int y) {
         this.x = x;
         this.y = y;
