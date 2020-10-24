@@ -9,27 +9,68 @@ public class GameOfFifteen extends JFrame implements ActionListener {
 
     private Brick[][] buttons;
     private Brick emptyButton;
-    int xGrid = 4;
-    int yGrid = 4;
-    int gridSize = xGrid * yGrid;
+    int xGrid;
+    int yGrid;
+    int gridSize;
     JPanel gameButtonsPanel = new JPanel();
     JPanel sidePanel = new JPanel();
-    JButton playButton = new JButton("play again");
+    JButton playButton;
     JPanel mainPanel = new JPanel();
+    //JPanel imagePanel =  new JPanel();
+    //String path = "C:\\Users\\Ashkan\\Pictures\\Saved Pictures\\Ashkan.jpg";
+
 
     GameOfFifteen() {
+        int rowSize = creatWelcomeDialog();
+        xGrid = rowSize;
+        yGrid = rowSize;
+        gridSize = xGrid * yGrid;
+        createPanelGame();
+    }
 
+    private int creatWelcomeDialog() {
+        int gridSize = 0;
+        while (true) {
+            try {
+                String input = JOptionPane.showInputDialog(
+                        "choose which size you want to start playing!\n" +
+                        "For example, if you choose 4 it will be\n " +
+                        "\"Puzzle-15\"\n " +
+                        "If you want a more difficult challenge," +
+                        "\n you can choose a larger number.\n");
+
+                if (input == null || input.isEmpty() || input.isBlank())
+                    System.exit(0);
+                gridSize = Integer.parseInt(input);
+                if (gridSize < 2)
+                    JOptionPane.showMessageDialog(null,"The number must be more than one");
+                else{
+                    return gridSize;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Invalid number please try again");
+            }
+
+      }
+    }
+
+    private void createPanelGame() {
         gameButtonsPanel.setLayout(new GridLayout(xGrid, yGrid));
-        shuffleArray(createButtons());
+        playButton = new JButton("Play again");
+        playButton.addActionListener(this);
+        createButtons();
+        shuffleArray();
         mainPanel.setLayout(new BorderLayout());
         sidePanel.add(playButton);
         mainPanel.add(gameButtonsPanel, BorderLayout.CENTER);
-        mainPanel.add(sidePanel, BorderLayout.SOUTH);
-        add(mainPanel);
-        setVisible(true);
-        setSize(300, 300);
-        setTitle("Game of 15");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        mainPanel.add(sidePanel, BorderLayout.NORTH);
+       // mainPanel.add(createImage());
+        this.add(mainPanel);
+        this.setVisible(true);
+        this.setSize(xGrid * 100 , yGrid * 100);
+       // this.setLocation(300, 150);
+        this.setTitle("Game of 15");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     public Brick[][] createButtons() {
@@ -38,7 +79,7 @@ public class GameOfFifteen extends JFrame implements ActionListener {
         for (int x = 0; x < xGrid; x++)
             for (int y = 0; y < yGrid; y++) {
                 buttons[x][y] = new Brick(x, y);
-                buttons[x][y].setText( String.valueOf(x * xGrid + y + 1));
+                buttons[x][y].setText(String.valueOf(x * xGrid + y + 1));
                 buttons[x][y].addActionListener(this);
                 gameButtonsPanel.add(buttons[x][y]);
             }
@@ -49,10 +90,10 @@ public class GameOfFifteen extends JFrame implements ActionListener {
         return buttons;
     }
 
-    public void shuffleArray(Brick[][] buttons) {
+    public void shuffleArray() {
         Random rnd = ThreadLocalRandom.current();
-        for (int i = buttons.length-1; i > 0; i--)
-            for (int j = buttons[i].length-1; j > 0; j--) {
+        for (int i = buttons.length - 1; i > 0; i--)
+            for (int j = buttons[i].length - 1; j > 0; j--) {
 
                 int indexX = rnd.nextInt(i + 1);
                 int indexY = rnd.nextInt(j + 1);
@@ -98,12 +139,11 @@ public class GameOfFifteen extends JFrame implements ActionListener {
         boolean isSuccess = true;
         if (emptyButton.getXPos() == xGrid - 1 && emptyButton.getYPos() == yGrid - 1) {
             int expectedValue = 0;
-            for (int x = 0; x < xGrid; x++)
-            {
+            for (int x = 0; x < xGrid; x++) {
                 for (int y = 0; y < yGrid; y++) {
                     expectedValue++;
-                    int buttonNumber = buttons[x][y].getText().isEmpty() ?  gridSize : Integer.valueOf(buttons[x][y].getText());
-                    if ( buttonNumber != expectedValue) {
+                    int buttonNumber = buttons[x][y].getText().isEmpty() ? gridSize : Integer.parseInt(buttons[x][y].getText());
+                    if (buttonNumber != expectedValue) {
                         isSuccess = false;
                         break;
                     }
@@ -111,29 +151,38 @@ public class GameOfFifteen extends JFrame implements ActionListener {
             }
         } else
             isSuccess = false;
-//TODO remove sout, we know the method works! :)
-        System.out.println(isSuccess);
         return isSuccess;
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        Brick selectedButton = (Brick) ae.getSource();
-        if (selectedButton.isNextTo(emptyButton)) {
-            moveButton(selectedButton);
-              if (isCompleted())
-                  JOptionPane.showMessageDialog(null, "You've won!");
-            refresh();
-
-            //TODO: make a ActionEvent med play again button and call shuffle method when the button is pressed.
+        if (ae.getSource().getClass() == Brick.class) {
+            Brick selectedButton = (Brick) ae.getSource();
+            if (selectedButton.isNextTo(emptyButton)) {
+                moveButton(selectedButton);
+                refresh();
+                if (isCompleted())
+                    JOptionPane.showMessageDialog(null, "You've won!");
+            }
+        } else if (ae.getSource().getClass() == JButton.class){
+            JButton playButton = (JButton) ae.getSource();
+            System.out.println(playButton.getText());
+            shuffleArray();
         }
-
-
     }
 
     public static void main(String[] args) {
         GameOfFifteen GameOfFifteenDemo = new GameOfFifteen();
     }
+/*
+    private JPanel createImage() {
+        ImageIcon icon = new ImageIcon(path);
+        Image image = icon.getImage();
 
+        JLabel label1 = new JLabel(icon);
+        3
+        imagePanel.add(label1);
+        return imagePanel;
+    }*/
 
 }
