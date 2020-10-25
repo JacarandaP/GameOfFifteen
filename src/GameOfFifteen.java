@@ -133,7 +133,7 @@ public class GameOfFifteen extends JFrame implements ActionListener {
             for (int x = 0; x < xGrid; x++) {
                 for (int y = 0; y < yGrid; y++) {
                     expectedValue++;
-                    int buttonNumber = buttons[x][y].getText().isEmpty() ?  gridSize : Integer.valueOf(buttons[x][y].getText());
+                    int buttonNumber = buttons[x][y].getText().isEmpty() ?  gridSize : Integer.parseInt(buttons[x][y].getText());
                     if ( buttonNumber != expectedValue) {
                         isSuccess = false;
                         break;
@@ -142,8 +142,6 @@ public class GameOfFifteen extends JFrame implements ActionListener {
             }
         } else
             isSuccess = false;
-//TODO remove sout, we know the method works! :)
-        System.out.println(isSuccess);
         return isSuccess;
     }
 
@@ -159,7 +157,6 @@ public class GameOfFifteen extends JFrame implements ActionListener {
             }
         } else if (ae.getSource().getClass() == JButton.class) {
             JButton playButton = (JButton) ae.getSource();
-            System.out.println(playButton.getText());
             shuffleArray();
         }
 
