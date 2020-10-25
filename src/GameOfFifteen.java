@@ -133,8 +133,8 @@ public class GameOfFifteen extends JFrame implements ActionListener {
             for (int x = 0; x < xGrid; x++) {
                 for (int y = 0; y < yGrid; y++) {
                     expectedValue++;
-                    int buttonNumber = buttons[x][y].getText().isEmpty() ?  gridSize : Integer.parseInt(buttons[x][y].getText());
-                    if ( buttonNumber != expectedValue) {
+                    int buttonNumber = buttons[x][y].getText().isEmpty() ? gridSize : Integer.parseInt(buttons[x][y].getText());
+                    if (buttonNumber != expectedValue) {
                         isSuccess = false;
                         break;
                     }
