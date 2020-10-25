@@ -16,9 +16,6 @@ public class GameOfFifteen extends JFrame implements ActionListener {
     JPanel sidePanel = new JPanel();
     JButton playButton;
     JPanel mainPanel = new JPanel();
-    //JPanel imagePanel =  new JPanel();
-    //String path = "C:\\Users\\Ashkan\\Pictures\\Saved Pictures\\Ashkan.jpg";
-
 
     GameOfFifteen() {
         int rowSize = creatWelcomeDialog();
@@ -33,7 +30,8 @@ public class GameOfFifteen extends JFrame implements ActionListener {
 
         try {
             Integer[] options = {2, 3, 4, 5, 6, 7, 8, 9};
-            n = (Integer) JOptionPane.showInputDialog(null, "Choose which size you want to start playing!" +
+            n = (Integer) JOptionPane.showInputDialog(null,
+                    "Choose which size you want to start playing!" +
                             "\nFor example, if you choose 4 it will be " +
                             "\nPuzzle-15 " +
                             "\nIf you want a more difficult challenge,you can choose a larger number",
@@ -55,7 +53,6 @@ public class GameOfFifteen extends JFrame implements ActionListener {
         sidePanel.add(playButton);
         mainPanel.add(gameButtonsPanel, BorderLayout.CENTER);
         mainPanel.add(sidePanel, BorderLayout.SOUTH);
-        // mainPanel.add(createImage());
         this.add(mainPanel);
         this.setVisible(true);
         this.setSize(xGrid * 100, yGrid * 100);
@@ -163,15 +160,4 @@ public class GameOfFifteen extends JFrame implements ActionListener {
     public static void main(String[] args) {
         GameOfFifteen GameOfFifteenDemo = new GameOfFifteen();
     }
-/*
-    private JPanel createImage() {
-        ImageIcon icon = new ImageIcon(path);
-        Image image = icon.getImage();
-
-        JLabel label1 = new JLabel(icon);
-        3
-        imagePanel.add(label1);
-        return imagePanel;
-    }*/
-
 }
