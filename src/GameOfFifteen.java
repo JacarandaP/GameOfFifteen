@@ -123,7 +123,7 @@ public class GameOfFifteen extends JFrame implements ActionListener {
             moveButton(selectedButton);
               if (isCompleted())
                   JOptionPane.showMessageDialog(null, "You've won!");
-            refresh();
+                  refresh();
 
             //TODO: make a ActionEvent med play again button and call shuffle method when the button is pressed.
         }
