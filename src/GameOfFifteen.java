@@ -29,29 +29,20 @@ public class GameOfFifteen extends JFrame implements ActionListener {
     }
 
     private int creatWelcomeDialog() {
-        int gridSize = 0;
-        while (true) {
-            try {
-                String input = JOptionPane.showInputDialog(
-                        "choose which size you want to start playing!\n" +
-                        "For example, if you choose 4 it will be\n " +
-                        "\"Puzzle-15\"\n " +
-                        "If you want a more difficult challenge," +
-                        "\n you can choose a larger number.\n");
+        int n = 0;
 
-                if (input == null || input.isEmpty() || input.isBlank())
-                    System.exit(0);
-                gridSize = Integer.parseInt(input);
-                if (gridSize < 2)
-                    JOptionPane.showMessageDialog(null,"The number must be more than one");
-                else{
-                    return gridSize;
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Invalid number please try again");
-            }
+        try {
+            Integer[] options = {2, 3, 4, 5, 6, 7, 8, 9};
+            n = (Integer) JOptionPane.showInputDialog(null, "Choose which size you want to start playing!" +
+                            "\nFor example, if you choose 4 it will be " +
+                            "\nPuzzle-15 " +
+                            "\nIf you want a more difficult challenge,you can choose a larger number",
+                    "GAME OF FIFTEEN", JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
 
-      }
+        } catch (Exception e) {
+            System.exit(0);
+        }
+        return n;
     }
 
     private void createPanelGame() {
@@ -63,12 +54,12 @@ public class GameOfFifteen extends JFrame implements ActionListener {
         mainPanel.setLayout(new BorderLayout());
         sidePanel.add(playButton);
         mainPanel.add(gameButtonsPanel, BorderLayout.CENTER);
-        mainPanel.add(sidePanel, BorderLayout.NORTH);
-       // mainPanel.add(createImage());
+        mainPanel.add(sidePanel, BorderLayout.SOUTH);
+        // mainPanel.add(createImage());
         this.add(mainPanel);
         this.setVisible(true);
-        this.setSize(xGrid * 100 , yGrid * 100);
-       // this.setLocation(300, 150);
+        this.setSize(xGrid * 100, yGrid * 100);
+        // this.setLocation(300, 150);
         this.setTitle("Game of 15");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -166,7 +157,7 @@ public class GameOfFifteen extends JFrame implements ActionListener {
                 if (isCompleted())
                     JOptionPane.showMessageDialog(null, "You've won!");
             }
-        } else if (ae.getSource().getClass() == JButton.class){
+        } else if (ae.getSource().getClass() == JButton.class) {
             JButton playButton = (JButton) ae.getSource();
             System.out.println(playButton.getText());
             shuffleArray();
