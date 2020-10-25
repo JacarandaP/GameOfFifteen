@@ -59,7 +59,7 @@ public class GameOfFifteen extends JFrame implements ActionListener {
         this.add(mainPanel);
         this.setVisible(true);
         this.setSize(xGrid * 100, yGrid * 100);
-        // this.setLocation(300, 150);
+        this.setLocation(300, 150);
         this.setTitle("Game of 15");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -156,11 +156,8 @@ public class GameOfFifteen extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "You've won!");
             }
         } else if (ae.getSource().getClass() == JButton.class) {
-            JButton playButton = (JButton) ae.getSource();
             shuffleArray();
         }
-
-
     }
 
     public static void main(String[] args) {
